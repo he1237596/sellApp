@@ -3,7 +3,7 @@
     <!--<div content="header">-->
       <!--I am header-->
     <!--</div>-->
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
@@ -21,12 +21,37 @@
   </div>
 </template>
 
-<script>
-  import header from './components/header/Header.vue'
+<script  type="text/ecmascript-6">
+import header from './components/header/Header.vue'
+import axios from 'axios'
+const ERR_OK = 0;
 export default {
   name: 'app',
-  components:{
-    'v-header':header,
+  mounted() {
+    this.get();
+  },
+  data() {
+    return {
+      seller: {},
+    }
+  },
+  methods:{
+    get(){
+      var _this=this;//备份this
+      axios.get('/api/seller').then(function (res) {
+//        console.log(res);
+        res=res.data;
+//        console.log(res);
+        if(res.error === ERR_OK){
+          _this.seller = res.data;
+        }
+      }).catch((function (err) {
+
+      }))
+    }
+  },
+  components: {
+    'v-header': header
   }
 }
 </script>
